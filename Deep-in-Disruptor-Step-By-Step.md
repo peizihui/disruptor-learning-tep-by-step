@@ -2,11 +2,11 @@ Deep-in-Disruptor-Step-By-Step
 
 # 1. 概览
 
+![image-20200427181055155](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427181055155.png)
 
 
 
-
-
+![img](Deep-in-Disruptor-Step-By-Step.assets/u=2906798474,3616997423&fm=26&gp=0-1587982281049.jpg)
 
 
 
@@ -238,24 +238,37 @@ MultiProducerSequencer
 
 
 
-## 3.8EventHandler
+## 3.8 WorkProcessor
+
+![image-20200427175943292](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427175943292.png)
+
+​										![image-20200427180016992](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427180016992.png)
+
+## 3.9EventHandler
 
 1. EventHandler: 由用户实现并且代表了Disruptor中的一个消费者的接口， 消费者逻辑处理的地方；
 
    
 
+<img src="http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427175426941.png" alt="image-20200427175426941" style="zoom:150%;" />
+
+
+
+![image-20200427175453271](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427175453271.png)
 
 
 
 
 
-
-
-
-
-
-##3.9 核心概念真题图解
+##3.10 核心概念真题图解
 
 
 
 ![img](http://q8xc9za4f.bkt.clouddn.com/cloudflare/u=2906798474,3616997423&fm=26&gp=0.jpg)
+
+
+
+
+
+
+

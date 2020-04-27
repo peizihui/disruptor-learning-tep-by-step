@@ -98,6 +98,8 @@ public class OrderEventHandler implements  EventHandler<OrderEvent> {
 
 ## 3.1 RingBuffer
 
+<img src="http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427172906046.png" alt="image-20200427172906046" style="zoom:80%;" />
+
 -  首尾相接的环
 
   ![](http://q8xc9za4f.bkt.clouddn.com/cloudflare/RingBuffer-1587972686730-1587972698902.png)
@@ -122,7 +124,21 @@ public class OrderEventHandler implements  EventHandler<OrderEvent> {
 
 事实上，上图中的ringbuffer只有10个槽完全是个意外。如果槽的个数是2的N次方更有利于基于二进制的计算机进行计算
 
-# 3.2 Sequence
+
+
+##3.2 Sequence
+
+
+
+![image-20200427173018017](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427173018017.png)
+
+
+
+![image-20200427173117018](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427173117018.png)
+
+
+
+
 
 1. 通过顺序递增的序号来编号，管理进行交换的数据；
 
@@ -134,21 +150,21 @@ public class OrderEventHandler implements  EventHandler<OrderEvent> {
 
 5. 另外的目的防止不同Sequence 之间不同CPU缓存伪共享（Flase Sharing）的问题；
 
-   
+## 3.3 Sequencer 
 
-   
+![image-20200427173241863](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427173241863.png)
 
-   # 3.3 Sequencer
 
-   1.是Disruptor的真正核心
 
-   
 
-   2.两个实现类
+
+    1.是Disruptor的真正核心 
+    
+    2.两个实现类
 
    ```
-   SingleProducerSequencer
-   MultiProducerSequencer
+SingleProducerSequencer
+MultiProducerSequencer
    ```
 
    3.主要实现生产者和消费者之间快速，正确地传递数据的并发算法；
@@ -159,18 +175,18 @@ public class OrderEventHandler implements  EventHandler<OrderEvent> {
 
    
 
-   ## 3.4  Sequence Barrier
+## 3.4  Sequence Barrier
 
    1. 用于保持对RingBuffer的 Main Published Sequence (Producer) 和Consumer之间的平衡关系；
-   2. Sequence Barrier 定义了决定Consumer是否还有可处理的事件的逻辑；
+2. Sequence Barrier 定义了决定Consumer是否还有可处理的事件的逻辑；
+  
 
+  
    
 
-   
 
 
-
-         ## 3.5 WaitStrategy
+## 3.5 WaitStrategy
 
 1.  决定一个消费者将如何等待生产者将Event置入Disruptor
 
@@ -186,6 +202,8 @@ public class OrderEventHandler implements  EventHandler<OrderEvent> {
 
      - ​	 block 暗示使用到锁；
 
+       ![image-20200427174707290](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427174707290.png)
+
    - SleepingWaitStrategy
 
      - ​    表现和BlockingWaitStrategy相当；
@@ -194,15 +212,50 @@ public class OrderEventHandler implements  EventHandler<OrderEvent> {
 
      - ​	对生产者线程影响最小，适合用户异步日志类似的场景
 
+       ![image-20200427174759663](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427174759663.png)
+
    - YieldingWaitStrategy
 
      - 性能最优
 
      - 适合用于低延迟系统；
-
+   
      - 要求极高性能且事件处理线数小于CPU逻辑核心数场景中，推荐使用此策略；例如，CPU开启超线程特性；
+   
+       ![image-20200427174827988](http://q8xc9za4f.bkt.clouddn.com/cloudflare/image-20200427174827988.png)
 
-       
+## 3.6 Event
+
+1. Event: 从生产者到消费者过程中所处理的数据单元；
+2. Disruptor 中没有代码表示Event，因为它完全是由用户定义的；
 
 
 
+## 3.7 EventProcessor
+
+1. EventProcessor: 主要事件循环，处理Disruptor中的Event，拥有消费者的Sequence;
+2.  实现类BatchEventProcessor,包含了event loop 有效的实现，并且将回调到一个EventHandler接口的实现对象
+
+
+
+## 3.8EventHandler
+
+1. EventHandler: 由用户实现并且代表了Disruptor中的一个消费者的接口， 消费者逻辑处理的地方；
+
+   
+
+
+
+
+
+
+
+
+
+
+
+##3.9 核心概念真题图解
+
+
+
+![img](http://q8xc9za4f.bkt.clouddn.com/cloudflare/u=2906798474,3616997423&fm=26&gp=0.jpg)

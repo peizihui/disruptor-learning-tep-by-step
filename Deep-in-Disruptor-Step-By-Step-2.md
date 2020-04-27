@@ -59,7 +59,7 @@ https://github.com/peizihui/disruptor-ChineseVersion-master.git
 
   
 
-  ##4.2 系统内存优化-内存屏障
+##4.2 系统内存优化-内存屏障
 
   1. 要正确实现无锁，需要另外一个关键技术，内存屏障；
   2. 对应JAVA语言，就是valotile变量与happens before 语义；
@@ -209,3 +209,25 @@ public long next(int n)
     return nextSequence;
 }
 ```
+
+# 5. WaitStrategy 等待策略分析
+
+**实现类**
+
+1. BlockWaitStrategy
+
+2. BusySpinWaitStrategy
+
+3. LiteBlockingWaitStrategy
+
+4. PhaseBackoffWaitStrategy
+
+5. SleepingWaitStrategy
+
+6. TimeoutBlockingWaitStrategy
+
+7. YeeldingWaitStrategy
+
+   
+
+​    **源码分析部分待续 **
